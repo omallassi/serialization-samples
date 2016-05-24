@@ -20,6 +20,7 @@ import org.home.pojo.MyPojo;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -78,6 +79,11 @@ public class JacksonSerializerTest {
 
         System.out.println("**** write Avro Schema (Jackson) ");
         System.out.println(asJson);
+        //generate file
+        FileWriter fwriter = new FileWriter(".//src//main//avro//generated-pojo.avsc");
+        fwriter.write(asJson);
+        fwriter.flush();
+        fwriter.close();
 
         //write Avro data
         Schema raw = new Schema.Parser().setValidate(true).parse(asJson);
@@ -105,6 +111,6 @@ public class JacksonSerializerTest {
         System.out.println(avrPojo);
 
 
-        //TODO essayer en générant le code à partir du schema généré. 
+        //TODO essayer en générant le code à partir du schema généré.
     }
 }

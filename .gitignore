@@ -9,3 +9,9 @@ target/classes/example/avro/User$Builder.class
 target/classes/example/avro/User$1.class
 .idea/copyright/profiles_settings.xml
 target/classes/example/avro/User$1.class
+.idea/libraries/Maven__com_fasterxml_jackson_dataformat_jackson_dataformat_avro_2_7_4.xml
+.idea/libraries/Maven__com_thoughtworks_paranamer_paranamer_2_7.xml
+.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
+target/classes/example/avro/User$1.class
+*.class
+.idea/

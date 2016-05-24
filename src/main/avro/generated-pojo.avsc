@@ -1,0 +1,13 @@
+{
+  "type" : "record",
+  "name" : "MyPojo",
+  "namespace" : "org.home.pojo",
+  "doc" : "Schema for org.home.pojo.MyPojo",
+  "fields" : [ {
+    "name" : "age",
+    "type" : "int"
+  }, {
+    "name" : "name",
+    "type" : [ "null", "string" ]
+  } ]
+}
