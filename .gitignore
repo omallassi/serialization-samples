@@ -1,0 +1,11 @@
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_7_0.xml
+.idea/compiler.xml
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_7_0.xml
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_7_0.xml
+.idea/misc.xml
+.idea/modules.xml
+*.class
+target/classes/example/avro/User$Builder.class
+target/classes/example/avro/User$1.class
+.idea/copyright/profiles_settings.xml
+target/classes/example/avro/User$1.class

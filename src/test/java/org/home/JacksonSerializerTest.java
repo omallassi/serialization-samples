@@ -10,6 +10,12 @@ import com.fasterxml.jackson.dataformat.avro.schema.AvroSchemaGenerator;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import org.apache.avro.Schema;
+import org.apache.avro.file.DataFileReader;
+import org.apache.avro.file.SeekableByteArrayInput;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.*;
+import org.apache.avro.specific.SpecificDatumReader;
 import org.home.pojo.MyPojo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,6 +41,7 @@ public class JacksonSerializerTest {
         StringWriter writer = new StringWriter();
         sut.serialize(writer, pojo);
 
+        System.out.println("**** write pojo");
         System.out.println(writer.toString());
 
 
@@ -56,6 +63,7 @@ public class JacksonSerializerTest {
         StringWriter schemaWriter = new StringWriter();
         mapper.writeValue(schemaWriter, jsonSchema);
 
+        System.out.println("**** write Json Schema (Jackson) ");
         System.out.println(schemaWriter.toString());
 
 
@@ -68,6 +76,7 @@ public class JacksonSerializerTest {
         org.apache.avro.Schema avroSchema = schemaWrapper.getAvroSchema();
         String asJson = avroSchema.toString(true);
 
+        System.out.println("**** write Avro Schema (Jackson) ");
         System.out.println(asJson);
 
         //write Avro data
@@ -77,9 +86,25 @@ public class JacksonSerializerTest {
         AvroMapper avroMapper = new AvroMapper();
         byte[] avroData = avroMapper.writer(schema).writeValueAsBytes(pojo);
 
-        //read value
+        //read value with jackson
         MyPojo unSerPojo = mapper.reader(MyPojo.class).with(schema).readValue(avroData);
 
+        System.out.println("**** unser Avro Bean (Jackson) ");
         System.out.println(unSerPojo);
+
+        //read value with avro
+
+
+        SeekableByteArrayInput sin = new SeekableByteArrayInput(avroData);
+        DatumReader<GenericRecord> userDatumReader = new GenericDatumReader<GenericRecord>(raw);
+        Decoder decoder = DecoderFactory.get().binaryDecoder(avroData, null);
+
+        System.out.println("**** unser Avro Bean (Avro) ");
+        GenericRecord avrPojo = null;
+        avrPojo = userDatumReader.read(avrPojo, decoder);
+        System.out.println(avrPojo);
+
+
+        //TODO essayer en générant le code à partir du schema généré. 
     }
 }
