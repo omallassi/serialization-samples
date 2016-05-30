@@ -10,11 +10,16 @@ import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.io.JsonEncoder;
 import org.apache.avro.reflect.ReflectData;
+import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
+import org.home.pojo.MyPojo;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 
 /**
@@ -57,9 +62,30 @@ public class AvroSerializerTest {
             // allocating and garbage collecting many objects for files with
             // many items.
             user = dataFileReader.next(user);
-            System.out.println(user);
+            System.out.println("SpecificDatumReader " + user);
         }
 
+
+        userDatumWriter = new ReflectDatumWriter<User>(User.class);
+        dataFileWriter = new DataFileWriter<User>(userDatumWriter);
+        dataFileWriter.create(user3.getSchema(), file);
+//        dataFileWriter.append(user1);
+//        dataFileWriter.append(user2);
+        dataFileWriter.append(user3);
+        dataFileWriter.close();
+
+
+        // Deserialize Users from disk
+        userDatumReader = new SpecificDatumReader<User>(User.class);
+        dataFileReader = new DataFileReader<User>(file, userDatumReader);
+        user = null;
+        while (dataFileReader.hasNext()) {
+            // Reuse user object by passing it to next(). This saves us from
+            // allocating and garbage collecting many objects for files with
+            // many items.
+            user = dataFileReader.next(user);
+            System.out.println("ReflectDatumWriter " + user);
+        }
 
 
         //write in json
@@ -75,4 +101,5 @@ public class AvroSerializerTest {
 
         System.out.println();
     }
+
 }
